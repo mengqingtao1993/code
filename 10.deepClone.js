@@ -57,4 +57,20 @@ let obj = {
 obj.d = obj
 let aaaa = deepClone(obj)
 obj.a = 222
-console.log(aaaa,obj)
+console.log(aaaa, obj)
+
+let deepClone = (value, hash = new WeakMap()) => {
+  if (typeof value !== 'object') return value
+  if (value === null) return value
+  let instance = new value.constructor
+  if(hash.has(value)){
+    return hash.get(value)
+  }
+  hash.set(value,instance)
+  for (let key in value) {
+    if (value.hasOwnProperty(key)) {
+      instance[key] = deepClone(value[key],hash)
+    }
+  }
+  return instance
+}
